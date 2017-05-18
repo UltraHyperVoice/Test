@@ -230,12 +230,12 @@ exports.commands = {
 	fire: 'shoot',
 	shoot: commands.fire,
 	ambushhelp: [
-		'/ambush start [seconds] - Starts a game of ambush in the room. The first round will begin after the mentioned number of seconds (1 minute by default). Requires + or higher to use.',
-		'/ambush join/leave - Joins/Leaves a game of ambush.',
-		'/ambush proceed - Forcibly starts the first round of the game. Requires + or higher to use',
-		'/ambush dq [user] - Disqualifies a player from a game of ambush. Requires % or higher to use',
-		'/ambush shoot/fire [user] - Shoots another player (you can shoot yourself too)',
-		'/ambush end - Forcibly ends a game of ambush. Requires % or higher to use.',
-		'/ambush rules - Displays the rules of the game.',
+		'/ambush iniciar [segundos] - Inicia un juego de Ambush en la sala. La primera ronda comenzará después del número de segundos mencionado (1 minuto por defecto). Requiere + o superior para usar.
+		'/ambush unir/salir - Se une / Sale un juego de Ambush .',
+		'/ambush proceder - Comienza forzosamente la primera ronda del juego. Requiere + o superior para usar.',
+		'/ambush dq [usuario] - Descalifica a un jugador de un juego de ambush. Requiere % o más alto para usar. ',
+		'/ambush disparar/fuego [usuario] - Dispara a otro usuario (También puedes dispararte a ti mismo).',
+		'/ambush terminar - Termina un juego de emboscada. Requiere % o más alto para usar.',
+		'/ambush reglas - Muestra las reglas del juego.',
 	],
 };

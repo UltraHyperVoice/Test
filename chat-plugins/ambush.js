@@ -230,7 +230,7 @@ exports.commands = {
 	fire: 'shoot',
 	shoot: commands.fire,
 	ambushhelp: [
-		'/ambush iniciar [segundos] - Inicia un juego de Ambush en la sala. La primera ronda comenzará después del número de segundos mencionado (1 minuto por defecto). Requiere + o superior para usar.
+		'/ambush iniciar [segundos] - Inicia un juego de Ambush en la sala. La primera ronda comenzará después del número de segundos mencionado (1 minuto por defecto). Requiere + o superior para usar.',
 		'/ambush unir/salir - Se une / Sale un juego de Ambush .',
 		'/ambush proceder - Comienza forzosamente la primera ronda del juego. Requiere + o superior para usar.',
 		'/ambush dq [usuario] - Descalifica a un jugador de un juego de ambush. Requiere % o más alto para usar. ',

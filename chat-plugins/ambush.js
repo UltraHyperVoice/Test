@@ -191,7 +191,7 @@ let commands = {
 	proceed: function (target, room, user) {
 		if (!room.ambush) return this.sendReply("No hay juego de Ambush en esta sala.");
 		if (room.isMuted(user) || user.locked) return this.errorReply("No puedes usar esto mientras no puedas hablar.");
-		if (!user.can('broadcast', null, room)) return this.sendReply("You must be ranked + or higher in this room to forcibly begin the first round of a game of ambush.");
+		if (!user.can('broadcast', null, room)) return this.sendReply("Debes ser + o más alto en esta sala para comenzar con fuerza la primera ronda de un juego de Ambush.");
 
 		if (room.ambush.round) return this.sendReply('Este juego de Ambush ya ha comenzado!');
 		if (room.ambush.players.size < 3) return this.sendReply('Todavía no hay suficientes jugadores. ¡Espera más para unirse!');

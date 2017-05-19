@@ -12,7 +12,7 @@ let amCache = {
 exports.commands = {
 	anime: function (target, room, user) {
 		if (!this.runBroadcast()) return;
-		if (!target) return this.errorReply("No target.");
+		if (!target) return this.errorReply("No encontrado.");
 		let targetAnime = Chat.escapeHTML(target.trim());
 		let id = targetAnime.toLowerCase().replace(/ /g, '');
 		if (amCache.anime[id]) return this.sendReply('|raw|' + amCache.anime[id]);
@@ -20,7 +20,7 @@ exports.commands = {
 		nani.get('anime/search/' + targetAnime)
 			.then(data => {
 				if (data[0].adult) {
-					return this.errorReply('Nsfw content is not allowed.');
+					return this.errorReply('Contenido Nsfw no esta permitido.');
 				}
 				nani.get('anime/' + data[0].id)
 					.then(data => {
@@ -44,12 +44,12 @@ exports.commands = {
 					});
 			})
 			.catch(error => {
-				return this.errorReply("Anime not found.");
+				return this.errorReply("No encontrado.");
 			});
 	},
 	manga: function (target, room, user) {
 		if (!this.runBroadcast()) return;
-		if (!target) return this.errorReply("No target.");
+		if (!target) return this.errorReply("No encontrado.");
 		let targetAnime = Chat.escapeHTML(target.trim());
 		let id = targetAnime.toLowerCase().replace(/ /g, '');
 		if (amCache.anime[id]) return this.sendReply('|raw|' + amCache.anime[id]);
@@ -81,7 +81,7 @@ exports.commands = {
 					});
 			})
 		.catch(error => {
-			return this.errorReply("Anime not found.");
+			return this.errorReply("No encontrado.");
 		});
 	},
 };

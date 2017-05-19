@@ -29,31 +29,31 @@ function parseStatus(text, encoding) {
 
 exports.commands = {
 	away: function (target, room, user) {
-		if (!user.isAway && user.name.length > 19 && !user.can('lock')) return this.sendReply('Your user name is too long to update your status.');
+		if (!user.isAway && user.name.length > 19 && !user.can('lock')) return this.sendReply('Su nombre de usuario es demasiado largo para actualizar su estado.');
 
 		target = target ? target.replace(/[^a-zA-Z0-9]/g, '') : 'AWAY';
 		let newName = user.name;
 		let status = parseStatus(target, true);
 		let statusLen = status.length;
-		if (statusLen > 14) return this.sendReply('Your status must be sort, not an entire description.');
+		if (statusLen > 14) return this.sendReply('Su estado debe ser concreto, no una descripción completa.');
 
 		if (user.isAway) {
 			let statusIdx = newName.search(/\s\-\s[\u24B6-\u24E9\u2460-\u2468\u24EA]+$/);
 			if (statusIdx > -1) newName = newName.substr(0, statusIdx);
-			if (user.name.substr(-statusLen) === status) return this.sendReply('Your are now "' + target + '".');
+			if (user.name.substr(-statusLen) === status) return this.sendReply('Ahora eres "' + target + '".');
 		}
 
 		newName += ' - ' + status;
-		if (newName.length > 18 && !user.can('lock')) return this.sendReply('The type of absence that you tried to choose "' + target + '" is too long for you username.');
+		if (newName.length > 18 && !user.can('lock')) return this.sendReply('El tipo de ausencia que trató de elegir "' + target + '" Es demasiado largo para tu nombre de usuario.');
 
         // forcerename any possible impersonators
 		let targetUser = Users.getExact(user.userid + target);
 		if (targetUser && targetUser !== user && targetUser.name === user.name + ' - ' + target) {
 			targetUser.resetName();
-			targetUser.send('|nametaken||Your name conflicts with ' + user.name + (user.name.substr(-1) === 's' ? '\'' : '\'s') + ' new away status.');
+			targetUser.send('|nametaken||Your name conflicts with ' + user.name + (user.name.substr(-1) === 's' ? '\'' : '\'s') + ' Nuevo estado de ausencia.');
 		}
 
-		if (user.can('lock', null, room)) this.add('|raw|-- ' + EM.nameColor(user.name).bold() + ' is now ' + target.toLowerCase() + '.');
+		if (user.can('lock', null, room)) this.add('|raw|-- ' + EM.nameColor(user.name).bold() + ' es ahora ' + target.toLowerCase() + '.');
 		user.forceRename(newName, user.registered);
 		user.updateIdentity();
 		user.isAway = true;
@@ -67,7 +67,7 @@ exports.commands = {
 		let statusIdx = newName.search(/\s\-\s[\u24B6-\u24E9\u2460-\u2468\u24EA]+$/);
 		if (statusIdx < 0) {
 			user.isAway = false;
-			if (user.can('lock', null, room)) this.add('|raw|-- ' + EM.nameColor(user.name).bold() + ' is no longer away.');
+			if (user.can('lock', null, room)) this.add('|raw|-- ' + EM.nameColor(user.name).bold() + ' Ya no está fuera.');
 			return false;
 		}
 
@@ -76,7 +76,7 @@ exports.commands = {
 		user.forceRename(newName, user.registered);
 		user.updateIdentity();
 		user.isAway = false;
-		if (user.can('lock', null, room)) this.add('|raw|-- ' + EM.nameColor(newName).bold() + '  is no longer ' + status.toLowerCase() + '.');
+		if (user.can('lock', null, room)) this.add('|raw|-- ' + EM.nameColor(newName).bold() + '  Ya no esta ' + status.toLowerCase() + '.');
 	},
 
 	afk: function (target, room, user) {

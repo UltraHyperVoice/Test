@@ -14,43 +14,43 @@ class Ambush {
 		}
 		this.timeLeft = Date.now() + seconds * 1000;
 
-		this.room.add('|uhtml|ambush' + this.room.ambushCount + this.round + '|<div class = "infobox"><center>A game of Ambush has been started!<br>' +
+		this.room.add('|uhtml|ambush' + this.room.ambushCount + this.round + '|<div class = "infobox"><center>¡Un juego de Ambush ha sido comenzado!<br>' +
 			'The game will begin in <b>' + seconds + '</b> seconds!<br>' +
-			'<button name = "send" value = "/ambush join">Join!</button></center></div>'
+			'<button name = "send" value = "/ambush unir">Unirse!</button></center></div>'
 		);
 		this.timer = setTimeout(() => {
 			if (this.players.size < 3) {
-				this.room.add('|uhtmlchange|ambush' + this.room.ambushCount + this.round + '|<div class = "infobox"><center>This game of ambush has been ended due to the lack of players.</center></div>').update();
+				this.room.add('|uhtmlchange|ambush' + this.room.ambushCount + this.round + '|<div class = "infobox"><center>Este juego de Ambush ha terminado debido a la falta de jugadores.</center></div>').update();
 				return this.end();
 			}
 			this.nextRound();
 		}, seconds * 1000);
 	}
 	updateJoins() {
-		let msg = 'ambush' + this.room.ambushCount + this.round + '|<div class = "infobox"><center>A game of Ambush has been started!<br>' +
+		let msg = 'ambush' + this.room.ambushCount + this.round + '|<div class = "infobox"><center>¡Un juego de Ambush ha sido comenzado!<br>' +
 			'The game will begin in <b>' + Math.round((this.timeLeft - Date.now()) / 1000) + '</b> seconds<br>' +
-			'<button name = "send" value = "/ambush join">Join!</button></center>';
+			'<button name = "send" value = "/ambush unir">Unirse!</button></center>';
 		if (this.players.size > 0) {
 			msg += '<center><b>' + this.players.size + '</b> ' + (this.players.size === 1 ? 'user has' : 'users have') + ' joined: ' + Array.from(this.players).map(player => Chat.escapeHTML(player[0].name)).join(', ') + '</center>';
 		}
 		this.room.add('|uhtmlchange|' + msg + '</div>');
 	}
 	join(user, self) {
-		if (!user.named) return self.errorReply("You must choose a name before joining a game of ambush.");
-		if (this.players.has(user)) return self.sendReply('You have already joined this game of ambush.');
-		if (this.round > 0) return self.sendReply('You cannot join a game of ambush after it has started.');
+		if (!user.named) return self.errorReply("Debe elegir un nombre antes de unirse a un juego de Ambush.");
+		if (this.players.has(user)) return self.sendReply('Ya te has unido a este juego de emboscada.');
+		if (this.round > 0) return self.sendReply('Usted no puede unirse a un juego de Ambush después de que ha comenzado.');
 
 		this.players.set(user, {status:'alive', rounds:0});
 		this.updateJoins();
 	}
 	leave(user, self) {
-		if (!this.players.has(user)) return self.sendReply('You haven\'t joined this game of ambush yet.');
+		if (!this.players.has(user)) return self.sendReply('Aún no te has unido a este juego de Ambush.');
 
 		this.players.delete(user);
 		if (!this.round) {
 			this.updateJoins();
 		} else {
-			this.room.add('|html|<b>' + Chat.escapeHTML(user.name) + ' has left the game!</b>');
+			this.room.add('|html|<b>' + Chat.escapeHTML(user.name) + ' ha abandonado el juego!</b>');
 		}
 	}
 	getSurvivors() {
@@ -62,7 +62,7 @@ class Ambush {
 		if (this.checkWinner()) return this.getWinner();
 		let survivors = this.getSurvivors();
 		if (this.lastRoundSurvivors === survivors.length) {
-			this.room.add('|html|<div class = "infobox"><center>This game of ambush has ended due to inactivity, with <b>' + survivors.length + '</b> survivors.</center></div>');
+			this.room.add('|html|<div class = "infobox"><center>Este juego de Ambush ha terminado debido a la inactividad, with <b>' + survivors.length + '</b> survivors.</center></div>');
 			return this.end();
 		}
 		this.lastRoundSurvivors = survivors.length;
@@ -71,36 +71,36 @@ class Ambush {
 		this.loadGuns();
 		let msg = 'ambush' + this.room.ambushCount + this.round + '|<div class = "infobox"><center><b>Round ' + this.round + '</b><br>' +
 			'Players: ' + survivors.map(player => Chat.escapeHTML(player[0].name)).join(', ') +
-			'<br><small>Use /fire [player] to shoot another player!</small>';
+			'<br><small>Usa /fuego [usuario] para disparar a otro jugador!</small>';
 		this.room.add('|uhtml|' + msg + '<br><i>Wait for it...</i></div>').update();
 
 		this.release = setTimeout(() => {
-			this.room.add('|uhtmlchange|' + msg + '<br><b style = "color:red; font-size: 12pt;">FIRE!</b></div>').update();
+			this.room.add('|uhtmlchange|' + msg + '<br><b style = "color:red; font-size: 12pt;">FUEGO!</b></div>').update();
 			this.canShoot = true;
 			this.resetTimer();
 		}, (Math.floor(Math.random() * 12) + 3) * 1000);
 	}
 	fire(user, target, self) {
 		let getUser = this.players.get(user);
-		if (!getUser) return self.sendReply("You aren't a player in this game of Ambush.");
+		if (!getUser) return self.sendReply("Usted no es un jugador en este juego de Ambush.");
 		this.madeMove = false;
 
-		if (!this.canShoot) return self.sendReply("You're not allowed to open fire yet!");
+		if (!this.canShoot) return self.sendReply("No se le permite disparar aún!");
 
-		if (getUser.status === 'dead') return self.sendReply("You can't fire after you've been killed!");
-		if (!getUser.rounds) return self.sendReply("You're out of rounds! You can't shoot anyone else!");
+		if (getUser.status === 'dead') return self.sendReply("No puedes disparar después de haber sido asesinado.!");
+		if (!getUser.rounds) return self.sendReply("¡Estás fuera de la ronda! ¡No puedes disparar a nadie más! ");
 
 		let targetUser = Users(target);
 		if (!targetUser) return self.sendReply('User ' + target + ' not found.');
 		if (!this.players.has(targetUser)) return self.sendReply(targetUser.name + ' is not a player!');
-		if (this.players.get(targetUser).status === 'dead') return self.sendReply(targetUser.name + ' has already been shot!');
+		if (this.players.get(targetUser).status === 'dead') return self.sendReply(targetUser.name + ' Ya a sido disparado!');
 
 		this.players.get(user).rounds--;
 		this.madeMove = true;
 		if (targetUser === user) {
 			this.room.add('|html|<b>' + user.name + ' shot themself!</b>');
 		} else if (!this.players.get(targetUser).rounds) {
-			this.room.add('|html|<b>' + Chat.escapeHTML(user.name) + ' fired at ' + Chat.escapeHTML(targetUser.name) + ', but ' + Chat.escapeHTML(targetUser.name) + ' has an active shield!</b>');
+			this.room.add('|html|<b>' + Chat.escapeHTML(user.name) + ' fired at ' + Chat.escapeHTML(targetUser.name) + ', but ' + Chat.escapeHTML(targetUser.name) + ' tiene un escudo activo!</b>');
 			return;
 		} else {
 			this.room.add('|html|<b>' + Chat.escapeHTML(user.name) + ' fired at ' + Chat.escapeHTML(targetUser.name) + '!</b>');
@@ -121,16 +121,16 @@ class Ambush {
 		}, ROUND_DURATION);
 	}
 	dq(target, self) {
-		if (!this.round) return self.sendReply('You can only disqualify a player after the first round has begun.');
+		if (!this.round) return self.sendReply('Sólo se puede descalificar a un jugador después de que la primera ronda haya comenzado.');
 		let targetUser = Users(target);
 		if (!targetUser) return self.sendReply('User ' + target + ' not found.');
 
 		let getUser = this.players.get(targetUser);
-		if (!getUser) return self.sendReply(targetUser.name + ' is not a player!');
-		if (getUser.status === 'dead') return self.sendReply(targetUser.name + ' has already been killed!');
+		if (!getUser) return self.sendReply(targetUser.name + ' No es un jugador!');
+		if (getUser.status === 'dead') return self.sendReply(targetUser.name + ' Ya a sido asesinado!');
 
 		this.players.delete(targetUser);
-		this.room.add('|html|<b>' + Chat.escapeHTML(targetUser.name) + ' has been disqualified from the game.</b>');
+		this.room.add('|html|<b>' + Chat.escapeHTML(targetUser.name) + ' a sido descalificado del juego.</b>');
 		if (this.checkWinner()) this.getWinner();
 	}
 	checkWinner() {
@@ -138,9 +138,9 @@ class Ambush {
 	}
 	getWinner() {
 		let winner = this.getSurvivors()[0][0].name;
-		let msg = '|html|<div class = "infobox"><center>The winner of this game of ambush is <b>' + Chat.escapeHTML(winner) + '!</b> Congratulations!</center>';
+		let msg = '|html|<div class = "infobox"><center>El ganador de este juego de Ambush es <b>' + Chat.escapeHTML(winner) + '!</b> Felicidades!</center>';
 		if (this.room.id === 'marketplace') {
-			msg += '<center>' + Chat.escapeHTML(winner) + ' has also won <b>5</b> credits for winning!</center>';
+			msg += '<center>' + Chat.escapeHTML(winner) + ' tambien a ganado <b>5</b> creditos por ganar!</center>';
 			writeCredits(winner, 5, () => this.room.add(msg).update());
 		} else {
 			this.room.add(msg).update();
@@ -149,7 +149,7 @@ class Ambush {
 	}
 	end(user) {
 		if (user) {
-			let msg = '<div class = "infobox"><center>This game of ambush has been forcibly ended by <b>' + Chat.escapeHTML(user.name) + '</b></center></div>';
+			let msg = '<div class = "infobox"><center>Este juego de Ambush ha sido finalizado por <b>' + Chat.escapeHTML(user.name) + '</b></center></div>';
 			if (!this.madeMove) {
 				this.room.add('|uhtmlchange|ambush' + this.room.ambushCount + this.round + '|' + msg).update();
 			} else {
@@ -167,61 +167,61 @@ let commands = {
 	'start': 'new',
 	'begin': 'new',
 	'new': function (target, room, user) {
-		if (room.ambush) return this.sendReply("There is already a game of ambush going on in this room.");
-		if (room.isMuted(user) || user.locked) return this.errorReply("You cannot use this while unable to speak.");
-		if (!user.can('broadcast', null, room)) return this.sendReply("You must be ranked + or higher in this room to start a game of ambush.");
+		if (room.ambush) return this.sendReply("Ya hay un juego de Ambush en esta sala.");
+		if (room.isMuted(user) || user.locked) return this.errorReply("No puedes usar esto mientras no puedas hablar.");
+		if (!user.can('broadcast', null, room)) return this.sendReply("Debes ser + o más alto en esta sala para comenzar un juego de Ambush.");
 
 		if (!target || !target.trim()) target = '60';
 		if (isNaN(target)) return this.sendReply('\'' + target + '\' is not a valid number.');
-		if (target.includes('.') || target > 180 || target < 10) return this.sendReply('The number of seconds needs to be a non-decimal number between 10 and 180.');
+		if (target.includes('.') || target > 180 || target < 10) return this.sendReply('El número de segundos debe ser un número no decimal entre 10 y 180.');
 
 		room.ambush = new Ambush(room, Number(target));
 	},
 	join: function (target, room, user) {
-		if (!room.ambush) return this.sendReply("There is no game of ambush going on in this room.");
-		if (room.isMuted(user) || user.locked) return this.errorReply("You cannot use this while unable to speak.");
+		if (!room.ambush) return this.sendReply("No hay juego de Ambush en esta sala.");
+		if (room.isMuted(user) || user.locked) return this.errorReply("No puedes usar esto mientras no puedas hablar.");
 
 		room.ambush.join(user, this);
 	},
 	leave: function (target, room, user) {
-		if (!room.ambush) return this.sendReply("There is no game of ambush going on in this room.");
+		if (!room.ambush) return this.sendReply("No hay juego de Ambush en esta sala.");
 
 		room.ambush.leave(user, this);
 	},
 	proceed: function (target, room, user) {
-		if (!room.ambush) return this.sendReply("There is no game of ambush going on in this room.");
-		if (room.isMuted(user) || user.locked) return this.errorReply("You cannot use this while unable to speak.");
+		if (!room.ambush) return this.sendReply("No hay juego de Ambush en esta sala.");
+		if (room.isMuted(user) || user.locked) return this.errorReply("No puedes usar esto mientras no puedas hablar.");
 		if (!user.can('broadcast', null, room)) return this.sendReply("You must be ranked + or higher in this room to forcibly begin the first round of a game of ambush.");
 
-		if (room.ambush.round) return this.sendReply('This game of ambush has already begun!');
-		if (room.ambush.players.size < 3) return this.sendReply('There aren\'t enough players yet. Wait for more to join!');
-		room.add('(' + user.name + ' forcibly started round 1)');
+		if (room.ambush.round) return this.sendReply('Este juego de Ambush ya ha comenzado!');
+		if (room.ambush.players.size < 3) return this.sendReply('Todavía no hay suficientes jugadores. ¡Espera más para unirse!');
+		room.add('(' + user.name + ' Inició la primera ronda)');
 		room.ambush.nextRound();
 	},
 	disqualify: 'dq',
 	dq: function (target, room, user) {
-		if (!room.ambush) return this.sendReply("There is no game of ambush going on in this room.");
-		if (room.isMuted(user) || user.locked) return this.errorReply("You cannot use this while unable to speak.");
-		if (!user.can('mute', null, room)) return this.sendReply("You must be ranked % or higher in this room to disqualify a user from a game of ambush.");
+		if (!room.ambush) return this.sendReply("No hay juego de Ambush en esta sala.");
+		if (room.isMuted(user) || user.locked) return this.errorReply("No puedes usar esto mientras no puedas hablar.");
+		if (!user.can('mute', null, room)) return this.sendReply("Usted debe ser % o más alto en esta sala para descalificar a un usuario de un juego de Ambush.");
 
 		room.ambush.dq(target, this);
 	},
 	shoot: 'fire',
 	fire: function (target, room, user) {
-		if (!room.ambush) return this.sendReply("There is no game of ambush going on in this room.");
-		if (room.isMuted(user) || user.locked) return this.errorReply("You cannot use this while unable to speak.");
+		if (!room.ambush) return this.sendReply("No hay juego de Ambush en esta sala.");
+		if (room.isMuted(user) || user.locked) return this.errorReply("No puedes usar esto mientras no puedas hablar.");
 
 		room.ambush.fire(user, target, this);
 	},
 	cancel: 'end',
 	end: function (target, room, user) {
-		if (!room.ambush) return this.sendReply("There is no game of ambush going on in this room.");
-		if (!user.can('mute', null, room)) return this.sendReply("You must be ranked % or higher in this room to end a game of ambush.");
+		if (!room.ambush) return this.sendReply("No hay juego de ambush en esta sala.");
+		if (!user.can('mute', null, room)) return this.sendReply("Usted debe ser % o más alto en esta sala para terminar un juego de Ambush.");
 
 		room.ambush.end(user);
 	},
 	help: function () {
-		this.parse('/help ambush');
+		this.parse('/ayuda ambush');
 	},
 };
 

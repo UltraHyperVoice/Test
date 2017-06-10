@@ -111,11 +111,11 @@ exports.commands = {
 		}
 	},
 	badgeshelp: ["/medallas - Acepta los siguientes comandos:",
-		"/lista medalla - Lista de medallas.",
+		"/Lista medalla - Lista de medallas.",
 		"/Info medalla, [nombredemedalla] - Obtiene informacion de una medallas especifica.",
 		"/Crear medalla, [nombredemedalla], [descripcion], [imagen] - Crea una medalla. Necesitas @, &, or ~",
 		"/Borrar medalla, [medalla] - Borra una medalla. Necesitas @, &, or ~",
-		"/Poner medalla, [user], [badgeName] - Give a user a badge. Requires Global %, Global @, &, or ~",
-		"/Quitar medalla, [usuario], [badgeName] - Take a badge from a user. Requires Global %, Global @, &, or ~",
-		"/badges user, [user] - List a users badges."],
+		"/Poner medalla, [usuario], [nombredemedalla] - Da a un usuario una medalla. Necesitas Global%, Global @, &, o ~ ",
+		"/Quitar medalla, [usuario], [nombredemedalla] - Toma una medalla de un usuario. Necesitas Global %, @, &, o ~",
+		"/Medalla usuario, [usuario] - Ve las medallas de un usuario."],
 };

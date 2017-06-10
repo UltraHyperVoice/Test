@@ -20,18 +20,18 @@ const colors = {
 };
 
 const shop = [
-	['XY-Base', 'Get three cards from the first pack released in the Pokemon XY set.', 10],
-	['XY-Flashfire', 'Get three cards from the Flashfire pack released in the Pokemon XY set.', 10],
-	['XY-Furious Fists', 'Get three cards from the Furious Fists pack released in the Pokemon XY set.', 10],
-	['XY-Phantom Forces', 'Get three cards from the Phantom Forces pack released in the Pokemon XY set.', 10],
-	['XY-Primal Clash', 'Get three cards from the Primal Clash pack released in the Pokemon XY set.', 10],
-	['XY-Roaring Skies', 'Get three cards from the Roaring Skies pack released in the Pokemon XY set.', 10],
-	['XY-Ancient Origins', 'Get three cards from the Ancient Origins pack released in the Pokemon XY set.', 10],
-	['XY-Promo', 'Get three cards from the Promo pack released in the Pokemon XY set.', 20],
+	['XY-Base', 'Obtenga tres cartas del primer paquete lanzado en el conjunto Pokemon XY.', 10],
+	['XY-Flashfire', 'Obtenga tres cartas del paquete Flashfire publicado en el set Pokemon XY.', 10],
+	['XY-Furious Fists', 'Obtenga tres cartas del paquete Furious Fists lanzado en el set Pokemon XY.', 10],
+	['XY-Phantom Forces', 'Obtenga tres cartas del paquete Phantom Forces lanzado en el set Pokemon XY.', 10],
+	['XY-Primal Clash', 'Obtenga tres cartas del paquete Primal Clash lanzado en el set Pokemon XY.', 10],
+	['XY-Roaring Skies', 'Obtenga tres cartas del paquete Roaring Skies lanzado en el set Pokemon XY.', 10],
+	['XY-Ancient Origins', 'Obtenga tres cartas del paquete Ancient Origins lanzado en el set Pokemon XY.', 10],
+	['XY-Promo', 'Obtén tres cartas del paquete Promo lanzado en el set Pokemon XY.', 20],
 ];
 let packShop = ['XY-Base', 'XY-Flashfire', 'XY-Furious Fists', 'XY-Phantom Forces', 'XY-Primal Clash', 'XY-Roaring Skies', 'XY-Ancient Origins', 'XY-Promo', 'Double Crisis', 'Water', 'Fire', 'Fighting', 'Fairy', 'Dragon', 'Colorless', 'Psychic', 'Lightning', 'Darkness', 'Grass', 'OU-Pack', 'UU-Pack', 'Uber-Pack', 'PU-Pack', 'NU-Pack', 'RU-Pack', 'LC-Pack', 'BL-Pack', 'BL2-Pack', 'BL3-Pack', 'Gen1', 'Gen2', 'Gen3', 'Gen4', 'Gen5', 'Gen6', 'Metal', 'Trainer', 'Supporter', 'Item', 'Stadium', 'EX-Pack', 'Legendary', 'Full', 'Event'];
-const tourCardRarity = ['No Card', 'Common', 'Uncommon', 'Rare', 'Epic', 'Epic', 'Legendary', 'Legendary', 'Mythic'];
-const cardRarity = ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary', 'Mythic'];
+const tourCardRarity = ['No Card', 'Común', 'Poco Común', 'Rara', 'Epica', 'Epica', 'Legendaria', 'Legendaria', 'Mítica'];
+const cardRarity = ['Común', 'Poco Común', 'Rara', 'Epica', 'Legendaria', 'Mítica'];
 let cleanShop = [];
 let cleanCard = [];
 let rareCache = []; // Used to cache cards for tours
@@ -126,13 +126,13 @@ function getShopDisplay(shop) {
 		"<tr><th class='card-th' style='background-image: -moz-linear-gradient(center top , #EBF3FC, #DCE9F9); box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.8) inset;'>Command</th><th class='card-th' style='background-image: -moz-linear-gradient(center top , #EBF3FC, #DCE9F9); box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.8) inset;'>Description</th><th class='card-th' style='background-image: -moz-linear-gradient(center top , #EBF3FC, #DCE9F9); box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.8) inset;'>Cost</th></tr>";
 	let start = 0;
 	while (start < shop.length) {
-		display += "<tr>" + "<td class='card-td'><button name='send' value='/buypack " + shop[start][0] + "' style='border-radius: 12px; box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2) inset;'><b>" + shop[start][0] + "</b></button></td>" +
+		display += "<tr>" + "<td class='card-td'><button name='send' value='/ComprarPaquete " + shop[start][0] + "' style='border-radius: 12px; box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2) inset;'><b>" + shop[start][0] + "</b></button></td>" +
 			"<td class='card-td'>" + shop[start][1] + "</td>" +
 			"<td class='card-td'>" + shop[start][2] + "</td>" +
 			"</tr>";
 		start++;
 	}
-	display += "</table><center>To buy a pack from the shop, use /buypack <em>pack</em>.</center>";
+	display += "</table><center>Para comprar un paquete de la tienda, usa /Comprarpaquete <em>pack</em>.</center>";
 	return display;
 }
 
@@ -193,25 +193,25 @@ exports.commands = {
 		if (!userPacks[target] || userPacks[target].length === 0) return this.sendReply((target === user.userid ? 'You have' : target + ' has') + ' no packs.');
 		this.sendReply('|raw|<u><b>List of packs:</b></u>');
 		for (let i = 0; i < userPacks[target].length; i++) {
-			this.sendReply('|raw| <button name="send" value="/openpack ' + userPacks[target][i] + '"> Press to open <b>' + toTitleCase(userPacks[target][i]) + '</b> pack</button>');
+			this.sendReply('|raw| <button name="send" value="/AbrirPaquete ' + userPacks[target][i] + '"> Aprieta para abrir <b>' + toTitleCase(userPacks[target][i]) + '</b> pack</button>');
 		}
 	},
 
 	buypacks: 'buypack',
 	buypack: function (target, room, user) {
-		if (!target) return this.sendReply("/buypack - Buys a pack from the pack shop. Alias: /buypacks");
+		if (!target) return this.sendReply("/ComprarPaquete - Compra un paquete de la tienda de paquetes . Alias: /CompraPaquetes");
 		let self = this;
 		let packId = toId(target);
 		let amount = Db('money').get(user.userid, 0);
-		if (cleanShop.indexOf(packId) < 0) return self.sendReply("This is not a valid pack. Use /packshop to see all packs.");
+		if (cleanShop.indexOf(packId) < 0) return self.sendReply("Este no es un paquete valido. Usa /paquetetienda para ver todas los paquetes.");
 		let shopIndex = cleanShop.indexOf(toId(target));
 		if (packId !== 'xybase' && packId !== 'xyfuriousfists' && packId !== 'xyflashfire' && packId !== 'xyphantomforces' && packId !== 'xyroaringskies' && packId !== 'xyprimalclash' && packId !== 'xyancientorigins' && packId !== 'xygenerations' && packId !== 'xypromo') return self.sendReply("This pack is not currently in circulation.  Please use /packshop to see the current packs.");
 		let cost = shop[shopIndex][2];
-		if (cost > amount) return self.sendReply("You need " + (cost - amount) + " more bucks to buy this pack.");
+		if (cost > amount) return self.sendReply("Necesitas " + (cost - amount) + " mas bucks para comprar este paquete.");
 		Economy.writeMoney(user.userid, Number(-cost));
 		let pack = toId(target);
-		self.sendReply('|raw|You have bought ' + target + ' pack for ' + cost + ' bucks. Use <button name="send" value="/openpack ' + pack + '"><b>/openpack ' + pack + '</b></button> to open your pack.');
-		self.sendReply("You have until the server restarts to open your pack.");
+		self.sendReply('|raw|Has comprado ' + target + ' paquete para ' + cost + ' bucks. Usa <button name="send" value="/AbrirPaquete ' + pack + '"><b>/AbrirPaquete ' + pack + '</b></button> to open your pack.');
+		self.sendReply("Tiene hasta que el servidor se reinicie para abrir su paquete.");
 		if (!userPacks[user.userid]) userPacks[user.userid] = [];
 		userPacks[user.userid].push(pack);
 	},
@@ -226,12 +226,12 @@ exports.commands = {
 	openpack: function (target, room, user) {
 		if (!this.runBroadcast()) return;
 		if (!target) {
-			this.sendReply("/openpack [pack] - Open a Pokemon Card Pack. Alias: /open, /openpacks");
+			this.sendReply("/AbrirPaquete [paquete] - Abre un Paquete de cartas de Pokémon. Alias: /Abrir, /AbrirPaquetes");
 			return this.parse('/packs');
 		}
-		if (cleanShop.indexOf(toId(target)) < 0) return this.sendReply("This pack does not exist.");
-		if (!userPacks[user.userid] || userPacks[user.userid].length === 0) return this.sendReply("You have no packs.");
-		if (userPacks[user.userid].indexOf(toId(target)) < 0) return this.sendReply("You do not have this pack.");
+		if (cleanShop.indexOf(toId(target)) < 0) return this.sendReply("Este paquete no existe.");
+		if (!userPacks[user.userid] || userPacks[user.userid].length === 0) return this.sendReply("No tienes paquetes.");
+		if (userPacks[user.userid].indexOf(toId(target)) < 0) return this.sendReply("No tienes este paquete.");
 		let newPack;
 		for (let i = 0; i < 3; i++) {
 			newPack = toId(target);
@@ -241,8 +241,8 @@ exports.commands = {
 			let cardName = cards[card].name;
 			let packName = packShop[cleanShop.indexOf(toId(target))];
 			this.sendReplyBox(EM.nameColor(user.name, true) + ' got <font color="' + colors[cards[card].rarity] + '">' + cards[card].rarity + '</font> ' +
-			'<button name="send" value="/card ' + card + '"><b>' + cardName + '</b></button> from a ' +
-			'<button name="send" value="/buypack ' + packName + '">' + packName + ' Pack</button>.');
+			'<button name="send" value="/carta ' + card + '"><b>' + cardName + '</b></button> from a ' +
+			'<button name="send" value="/Comprarpaquete ' + packName + '">' + packName + ' Pack</button>.');
 		}
 		let usrIndex = userPacks[user.userid].indexOf(newPack);
 		userPacks[user.userid].splice(usrIndex, 1);
@@ -250,25 +250,25 @@ exports.commands = {
 
 	givepacks: 'givepack',
 	givepack: function (target, room, user) {
-		if (!user.can('pban')) return this.errorReply("/givepack - Access denied.");
-		if (!target) return this.sendReply("/givepack [user], [pack] - Give a user a pack.");
+		if (!user.can('pban')) return this.errorReply("/DarPaquete - Acceso denegado.");
+		if (!target) return this.sendReply("/DarPaquete [usuario], [paquete] - Da a un usuario un paquete.");
 		let parts = target.split(',');
 		this.splitTarget(parts[0]);
-		if (!parts[1]) return this.sendReply("/givepack [user], [pack] - Give a user a pack.");
+		if (!parts[1]) return this.sendReply("/DarPaquete [usuario], [paquete] - Da a un usuario un paquete.");
 		let pack = toId(parts[1]);
-		if (cleanShop.indexOf(pack) < 0) return this.sendReply("This pack does not exist.");
-		if (!this.targetUser) return this.sendReply("User '" + this.targetUsername + "' not found.");
+		if (cleanShop.indexOf(pack) < 0) return this.sendReply("Este paquete no existe.");
+		if (!this.targetUser) return this.sendReply("Usuario '" + this.targetUsername + "' no encontrado.");
 		if (!userPacks[user.name]) userPacks[user.name] = [];
 		userPacks[user.name].push(pack);
 		this.sendReply(this.targetUsername + " was given " + pack + " pack. This user now has " + userPacks[user.name].length + " pack(s).");
 		Users.get(this.targetUsername).connections[0].sendTo(room.id,
-			'|raw|' + user.name + ' has given you ' + pack + ' pack. You have until the server restarts to open your pack.' +
-			'Use <button name="send" value="/openpack ' + pack + '"><b>/openpack ' + pack + '</b></button> to open your pack.');
+			'|raw|' + user.name + ' Se le dio ' + pack + ' pack. Tiene hasta que el servidor se reinicie para abrir su paquete.' +
+			'Usa <button name="send" value="/AbrirPaquete ' + pack + '"><b>/AbrirPaquete ' + pack + '</b></button> para abrir tu paquete.');
 	},
 
 	takepacks: 'takepack',
 	takepack: function (target, room, user) {
-		if (!user.can('pban')) return this.errorReply("/takepack - Access denied.");
+		if (!user.can('pban')) return this.errorReply("/AgarraPaquete - Acceso denegado.");
 		if (!target) return this.sendReply("/takepack [user], [pack] - Take a pack from a user.");
 		let parts = target.split(',');
 		this.splitTarget(parts[0]);
